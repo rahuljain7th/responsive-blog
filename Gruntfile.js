@@ -9,19 +9,25 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    jshint: {
+    all: ['Gruntfile.js']
+  },
     responsive_images: {
       dev: {
         options: {
-          engine: 'im',
+          engine: 'gm',
           sizes: [{
-            /*
-            Change these:
-            
-            width: ,
-            suffix: ,
-            quality:
-            */
-          }]
+        name: 'small',
+        width: 320,
+        height: 240
+      },{
+        name: 'medium',
+        width: 640
+      },{
+        name: "large",
+        width: 800,
+        quality: 80
+      }]
         },
 
         /*
@@ -58,17 +64,18 @@ module.exports = function(grunt) {
       dev: {
         files: [{
           expand: true,
-          src: 'images_src/fixed/*.{gif,jpg,png}',
-          dest: 'images/'
+          cwd: 'images_src/fixed',
+          src: '*.{gif,jpg,png}',
+          dest: 'images/fixed'
         }]
       },
     },
   });
-  
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-responsive-images');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mkdir');
-  grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images']);
+  grunt.registerTask('default', ['jshint','clean', 'mkdir', 'copy', 'responsive_images']);
 
 };
